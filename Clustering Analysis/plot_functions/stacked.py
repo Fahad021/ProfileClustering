@@ -27,7 +27,7 @@ def plot_stacked(col, data, by='cluster', proportion=True, proc_plot=NULL_FUNC, 
         x_label = col
         y_label = 'cluster'
     else:
-        raise Exception('Invalid by = %s' % by)
+        raise Exception(f'Invalid by = {by}')
     cluster_stacked_vals = {}
     cluster_stacked = {}
     col_vals = set()
@@ -40,9 +40,8 @@ def plot_stacked(col, data, by='cluster', proportion=True, proc_plot=NULL_FUNC, 
             _count = val_counts[val]
             cluster_stacked_vals[c][val] = _count
     col_vals = list(col_vals)
-    for c in cluster_stacked_vals:
+    for c, v_counts in cluster_stacked_vals.items():
         cluster_stacked[c] = []
-        v_counts = cluster_stacked_vals[c]
         for col_val in col_vals:
             if col_val in v_counts:
                 cluster_stacked[c].append(v_counts[col_val])
@@ -74,7 +73,11 @@ def plot_stacked(col, data, by='cluster', proportion=True, proc_plot=NULL_FUNC, 
 
 def save_stacked_bars(algorithm_name, params, profiles, save_dir):
     def proc_plot(plt):
-        plt.savefig(save_dir + '%s breakdown [algo<%s>, params<%s>].png' % (col, algorithm_name, urlencode(params)), bbox_inches='tight')
+        plt.savefig(
+            save_dir
+            + f'{col} breakdown [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+            bbox_inches='tight',
+        )
 
     plot_stacked('Climatezone', profiles, proc_plot=proc_plot)
     plot_stacked('Timezone', profiles, proc_plot=proc_plot)

@@ -13,16 +13,22 @@ def save_entropy_distribution(algorithm_name, params, combined_profiles, save_di
     plt.xlabel('profile')
     plt.ylabel('entropy')
     plt.title('Profile Entropy Distribution')
-    plt.savefig(save_dir + 'profile entropy distribution [algo<%s>, params<%s>].png' % (algorithm_name, urlencode(params)), bbox_inches='tight')
+    plt.savefig(
+        f'{save_dir}profile entropy distribution [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+        bbox_inches='tight',
+    )
     plt.close()
-    
+
     # Entropy building distribution
     combined_profiles_buildings = combined_profiles.drop_duplicates('Building')
     plt.plot(range(combined_profiles_buildings.shape[0]), combined_profiles_buildings.entropy.sort_values())
     plt.xlabel('building')
     plt.ylabel('entropy')
     plt.title('Building Entropy Distribution')
-    plt.savefig(save_dir + 'building entropy distribution [algo<%s>, params<%s>].png' % (algorithm_name, urlencode(params)), bbox_inches='tight')
+    plt.savefig(
+        f'{save_dir}building entropy distribution [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+        bbox_inches='tight',
+    )
     plt.close()
 
 def save_field_level_entropy_distribution(algorithm_name, params, combined_profiles, save_dir):
@@ -35,7 +41,10 @@ def save_field_level_entropy_distribution(algorithm_name, params, combined_profi
             plt.plot(np.linspace(0,1, len(sorted_entropies)), sorted_entropies, label='%s (%d)' % (field_value, len(sorted_entropies)))
         plt.xlabel('Buildings Proportion')
         plt.ylabel('Entropy')
-        plt.title('Entropy distribution by %s' % field)
+        plt.title(f'Entropy distribution by {field}')
         plt.legend()
-        plt.savefig(save_dir + 'building entropy distribution by %s [algo<%s>, params<%s>].png' % (field, algorithm_name, urlencode(params)), bbox_inches='tight')
+        plt.savefig(
+            f'{save_dir}building entropy distribution by {field} [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+            bbox_inches='tight',
+        )
         plt.close()

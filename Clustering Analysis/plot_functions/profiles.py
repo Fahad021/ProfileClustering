@@ -9,11 +9,8 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 def get_dict(col):
-    vc_dict = {}
     vc = col.value_counts()
-    for idx in vc.index:
-        vc_dict[idx] = vc.loc[idx]
-    return vc_dict
+    return {idx: vc.loc[idx] for idx in vc.index}
 
 def get_thickness(val, all_vals):
     std_val = np.std(all_vals)
@@ -44,7 +41,10 @@ def save_profile_plots(algorithm_name, params, profiles, save_dir):
     plt.ylabel('Mean Normalized Energy Use')
     plt.title('Average Cluster Energy Profile by Hour')
     plt.legend(['Cluster %d (%d)' % (cid, cluster_counts[cid]) for cid in cluster_ids])
-    plt.savefig(save_dir + 'Average Cluster Energy Profile by Hour [algo<%s>, params<%s>].png' % (algorithm_name, urlencode(params)), bbox_inches='tight')
+    plt.savefig(
+        f'{save_dir}Average Cluster Energy Profile by Hour [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+        bbox_inches='tight',
+    )
     plt.close()
 
     # Sample Plot
@@ -64,8 +64,15 @@ def save_profile_plots(algorithm_name, params, profiles, save_dir):
         plt.xlabel('Hour')
         plt.ylabel('Mean Normalized Energy Use')
         plt.title('Cluster Energy Profiles by Hour')
-        cluster_handles.append(mlines.Line2D([], [], color=plot_color, label='Cluster ' + str(cid)))
+        cluster_handles.append(
+            mlines.Line2D(
+                [], [], color=plot_color, label=f'Cluster {str(cid)}'
+            )
+        )
 
     plt.legend(handles=cluster_handles)
-    plt.savefig(save_dir + 'Cluster Energy Profiles by Hour [algo<%s>, params<%s>].png' % (algorithm_name, urlencode(params)), bbox_inches='tight')
+    plt.savefig(
+        f'{save_dir}Cluster Energy Profiles by Hour [algo<{algorithm_name}>, params<{urlencode(params)}>].png',
+        bbox_inches='tight',
+    )
     plt.close()
